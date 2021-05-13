@@ -217,7 +217,7 @@ func (r *Renderer) renderAutoLink(w Writer, source []byte, node ast.Node, enteri
 		return ast.WalkContinue, nil
 	}
 
-	url := string(util.EscapeHTML(util.URLEscape(n.URL(source), false)))
+	url := string(util.URLEscape(n.URL(source), false))
 	if n.AutoLinkType == ast.AutoLinkEmail && !strings.HasPrefix(strings.ToLower(url), "mailto:") {
 		w.SetLink("mailto:" + url)
 	} else {
@@ -255,7 +255,7 @@ func (r *Renderer) renderImage(w Writer, source []byte, node ast.Node, entering 
 	}
 	n := node.(*ast.Image)
 
-	filePath := string(util.EscapeHTML(util.URLEscape(n.Destination, true)))
+	filePath := string(util.URLEscape(n.Destination, true))
 	inlineImg := "data:image/"
 
 	switch {
@@ -302,7 +302,7 @@ func (r *Renderer) renderImage(w Writer, source []byte, node ast.Node, entering 
 func (r *Renderer) renderLink(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	n := node.(*ast.Link)
 	if entering {
-		w.SetLink(string(util.EscapeHTML(util.URLEscape(n.Destination, true))))
+		w.SetLink(string(util.URLEscape(n.Destination, true)))
 		currStyle := w.CurrentStyle()
 		newStyle := currStyle.Clone()
 		newStyle.FontStyle += "U"
