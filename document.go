@@ -138,6 +138,7 @@ func (d *Document) ThematicBreak() {
 
 	d.PDF.SetY(d.PDF.GetY() + h)
 	d.PDF.CellFormat(w, h, "", "T", 0, "", true, 0, "")
+	d.PDF.Ln(-1)
 }
 
 // WriteImage draw an image in PDF
