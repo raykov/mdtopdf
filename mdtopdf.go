@@ -20,6 +20,7 @@ func Convert(r io.Reader, w io.Writer) error {
 		goldmark.WithRenderer(NewRenderer()),
 		goldmark.WithExtensions(
 			extension.NewTable(),
+			extension.Strikethrough,
 		),
 	)
 
@@ -39,7 +40,3 @@ func Convert(r io.Reader, w io.Writer) error {
 
 	return nil
 }
-
-
-
-

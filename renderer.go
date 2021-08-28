@@ -45,6 +45,8 @@ func NewRenderer() *Renderer {
 	r.Register(ast.KindRawHTML, r.renderRawHTML)
 	r.Register(ast.KindText, r.renderText)
 	r.Register(ast.KindString, r.renderString)
+	// strikethrough
+	r.Register(tast.KindStrikethrough, r.renderStrikethrough)
 
 	return r
 }
@@ -123,15 +125,19 @@ func (r *Renderer) renderTableHeader(w Writer, source []byte, node ast.Node, ent
 
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderTableRow(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderTableCell(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderDocument(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderHeading(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	n := node.(*ast.Heading)
 	if entering {
@@ -143,18 +149,23 @@ func (r *Renderer) renderHeading(w Writer, source []byte, node ast.Node, enterin
 
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderBlockquote(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderCodeBlock(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderFencedCodeBlock(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderHTMLBlock(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderList(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if entering {
 		currStyle := w.CurrentStyle()
@@ -167,6 +178,7 @@ func (r *Renderer) renderList(w Writer, source []byte, node ast.Node, entering b
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderListItem(w Writer, source []byte, n ast.Node, entering bool) (ast.WalkStatus, error) {
 	if entering {
 		if p := n.Parent().(*ast.List); p.IsOrdered() {
@@ -188,6 +200,7 @@ func (r *Renderer) renderListItem(w Writer, source []byte, n ast.Node, entering 
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderParagraph(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if entering {
 	} else {
@@ -196,6 +209,7 @@ func (r *Renderer) renderParagraph(w Writer, source []byte, node ast.Node, enter
 
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderTextBlock(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		if _, ok := node.NextSibling().(ast.Node); ok && node.FirstChild() != nil {
@@ -204,6 +218,7 @@ func (r *Renderer) renderTextBlock(w Writer, source []byte, node ast.Node, enter
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderThematicBreak(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		return ast.WalkContinue, nil
@@ -211,6 +226,7 @@ func (r *Renderer) renderThematicBreak(w Writer, source []byte, node ast.Node, e
 	w.ThematicBreak()
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderAutoLink(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	n := node.(*ast.AutoLink)
 	if !entering {
@@ -228,9 +244,11 @@ func (r *Renderer) renderAutoLink(w Writer, source []byte, node ast.Node, enteri
 	w.SetLink("")
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderCodeSpan(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderEmphasis(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	//"B" (bold), "I" (italic), "U" (underscore), "S" (strike-out)
 	n := node.(*ast.Emphasis)
@@ -249,6 +267,7 @@ func (r *Renderer) renderEmphasis(w Writer, source []byte, node ast.Node, enteri
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		return ast.WalkContinue, nil
@@ -299,6 +318,7 @@ func (r *Renderer) renderImage(w Writer, source []byte, node ast.Node, entering 
 
 	return ast.WalkSkipChildren, nil
 }
+
 func (r *Renderer) renderLink(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	n := node.(*ast.Link)
 	if entering {
@@ -314,9 +334,11 @@ func (r *Renderer) renderLink(w Writer, source []byte, node ast.Node, entering b
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderRawHTML(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderText(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		return ast.WalkContinue, nil
@@ -336,6 +358,7 @@ func (r *Renderer) renderText(w Writer, source []byte, node ast.Node, entering b
 	}
 	return ast.WalkContinue, nil
 }
+
 func (r *Renderer) renderString(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		return ast.WalkContinue, nil
@@ -351,6 +374,20 @@ func (r *Renderer) renderString(w Writer, source []byte, node ast.Node, entering
 		} else {
 			_, _ = w.Write(n.Value)
 		}
+	}
+	return ast.WalkContinue, nil
+}
+
+func (r *Renderer) renderStrikethrough(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
+	//"B" (bold), "I" (italic), "U" (underscore), "S" (strike-out)
+
+	if entering {
+		currStyle := w.CurrentStyle()
+		newStyle := currStyle.Clone()
+		newStyle.FontStyle += "S"
+		w.WithStyle(newStyle)
+	} else {
+		w.ResetStyle()
 	}
 	return ast.WalkContinue, nil
 }
