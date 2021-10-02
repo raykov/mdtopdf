@@ -3,7 +3,10 @@ package mdtopdf
 import (
 	"io"
 
-	"github.com/jung-kurt/gofpdf"
+	"github.com/raykov/mdtopdf/document"
+	"github.com/raykov/mdtopdf/renderer"
+
+	"github.com/raykov/gofpdf"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -17,7 +20,7 @@ func Convert(r io.Reader, w io.Writer) error {
 	}
 
 	markdown := goldmark.New(
-		goldmark.WithRenderer(NewRenderer()),
+		goldmark.WithRenderer(renderer.NewRenderer()),
 		goldmark.WithExtensions(
 			extension.NewTable(),
 			extension.Strikethrough,
@@ -27,7 +30,7 @@ func Convert(r io.Reader, w io.Writer) error {
 	pdf := gofpdf.New("portrait", "pt", "Letter", ".")
 	pdf.AddPage()
 
-	d := NewDocument(pdf, defaultStyle)
+	d := document.NewDocument(pdf, document.DefaultStyle)
 
 	if err = markdown.Convert(md, d); err != nil {
 		return err
