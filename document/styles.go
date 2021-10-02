@@ -1,4 +1,4 @@
-package mdtopdf
+package document
 
 // Styles holds a list of all applied styles at the moment
 type Styles struct {
