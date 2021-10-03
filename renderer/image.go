@@ -4,15 +4,20 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"image"
+	"image/png"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/raykov/oksvg"
+	"github.com/srwiley/rasterx"
 
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/util"
 )
 
-const inlineImg = "data:image/"
+const inlineDataPrefix = "data:image/"
 
 func renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
@@ -23,8 +28,8 @@ func renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.Wal
 	filePath := string(util.URLEscape(n.Destination, true))
 
 	switch {
-	case strings.HasPrefix(filePath, inlineImg):
-		return inlineImage(w, node, filePath)
+	case strings.HasPrefix(filePath, inlineDataPrefix):
+		return inlineData(w, node, filePath)
 	case strings.HasPrefix(filePath, "http"):
 		return webImage(w, node, filePath)
 	default:
@@ -32,25 +37,66 @@ func renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.Wal
 	}
 }
 
-func inlineImage(w Writer, node ast.Node, filePath string) (ast.WalkStatus, error) {
+func inlineData(w Writer, node ast.Node, filePath string) (ast.WalkStatus, error) {
 	parts := strings.Split(filePath, ",")
 	if len(parts) != 2 {
 		return ast.WalkSkipChildren, nil
 	}
-	partsInfo := strings.Split(strings.TrimPrefix(parts[0], inlineImg), ";")
+
+	partsInfo := strings.Split(strings.TrimPrefix(parts[0], inlineDataPrefix), ";")
 	if len(partsInfo) != 2 {
 		return ast.WalkSkipChildren, nil
 	}
+
 	if partsInfo[1] != "base64" {
 		return ast.WalkSkipChildren, nil
 	}
-	data, err := base64.StdEncoding.DecodeString(parts[1])
+
+	switch partsInfo[0] {
+	case "png", "jpeg", "jpg", "gif":
+		return inlineImage(w, node, parts[1], partsInfo[0])
+	case "svg+xml", "svg":
+		return inlineSVG(w, node, parts[1])
+	default:
+		return ast.WalkSkipChildren, nil
+	}
+}
+
+func inlineImage(w Writer, node ast.Node, rawData, ext string) (ast.WalkStatus, error) {
+	data, err := base64.StdEncoding.DecodeString(rawData)
 	if err != nil {
 		return ast.WalkSkipChildren, nil
 	}
 
 	file := bytes.NewReader(data)
-	w.WriteImage(parts[1]+"."+partsInfo[0], file, node.Attributes()...)
+	w.WriteImage(rawData+"."+ext, file, node.Attributes()...)
+
+	return ast.WalkSkipChildren, nil
+}
+
+func inlineSVG(w Writer, node ast.Node, rawData string) (ast.WalkStatus, error) {
+	data, err := base64.StdEncoding.DecodeString(rawData)
+	if err != nil {
+		return ast.WalkSkipChildren, nil
+	}
+
+	icon, err := oksvg.ReadIconStream(bytes.NewReader(data), oksvg.WarnErrorMode)
+	if err != nil {
+		fmt.Println(err)
+		return ast.WalkSkipChildren, nil
+	}
+	wi, hi := int(icon.ViewBox.W), int(icon.ViewBox.H)
+	img := image.NewRGBA(image.Rect(0, 0, wi, hi))
+
+	scannerGV := rasterx.NewScannerGV(wi, hi, img, img.Bounds())
+	raster := rasterx.NewDasher(wi, hi, scannerGV)
+	icon.Draw(raster, 1.0)
+	icon.DrawTexts(img, 1.0)
+
+	var buff = bytes.NewBuffer([]byte{})
+	png.Encode(buff, img)
+
+	w.WriteImage(rawData+".png", buff, node.Attributes()...)
 
 	return ast.WalkSkipChildren, nil
 }
