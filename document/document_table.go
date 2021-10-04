@@ -66,4 +66,5 @@ func (d *Document) WriteTable(rows ...[]string) {
 		}
 		d.LineBreak()
 	}
+	d.PDF.Ln(1)
 }
