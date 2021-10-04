@@ -13,7 +13,7 @@ import (
 )
 
 // Convert your Markdown to PDF
-func Convert(r io.Reader, w io.Writer) error {
+func Convert(r io.Reader, w io.Writer, extensions ...func(*gofpdf.Fpdf)) error {
 	md, err := io.ReadAll(r)
 	if err != nil {
 		return err
@@ -27,7 +27,12 @@ func Convert(r io.Reader, w io.Writer) error {
 		),
 	)
 
-	pdf := gofpdf.New("portrait", "pt", "Letter", ".")
+	pdf := gofpdf.New("P", "pt", "A4", ".")
+
+	for _, extension := range extensions {
+		extension(pdf)
+	}
+
 	pdf.AddPage()
 
 	d := document.NewDocument(pdf, document.DefaultStyle)
