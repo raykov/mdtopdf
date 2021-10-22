@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image"
 	"image/png"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -17,7 +18,14 @@ import (
 	"github.com/yuin/goldmark/util"
 )
 
-const inlineDataPrefix = "data:image/"
+const (
+	inlineDataPrefix           = "data:image/"
+	incorrectInlineImageFormat = `Incorrect inline image format:`
+	missingInlineImageData     = `Missing inline image data:`
+	inlineImageError           = `%s
+	expected:	![](data:image/png;base64,iVBORw0KG...SUVORK5CYII=)
+	got:		![](%s)`
+)
 
 func renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
@@ -40,6 +48,12 @@ func renderImage(w Writer, source []byte, node ast.Node, entering bool) (ast.Wal
 func inlineData(w Writer, node ast.Node, filePath string) (ast.WalkStatus, error) {
 	parts := strings.Split(filePath, ",")
 	if len(parts) != 2 {
+		log.Printf(inlineImageError, incorrectInlineImageFormat, filePath)
+		return ast.WalkSkipChildren, nil
+	}
+
+	if parts[1] == "" {
+		log.Printf(inlineImageError, missingInlineImageData, filePath)
 		return ast.WalkSkipChildren, nil
 	}
 
