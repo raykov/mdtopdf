@@ -51,7 +51,7 @@ type Renderer struct {
 
 // Render renders a PDF doc
 func (r *Renderer) Render(w io.Writer, source []byte, node ast.Node) error {
-	writer := w.(interface{}).(Writer)
+	writer := w.(any).(Writer)
 
 	err := ast.Walk(node, func(node ast.Node, entering bool) (ast.WalkStatus, error) {
 		s := ast.WalkStatus(ast.WalkContinue)

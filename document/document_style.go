@@ -1,6 +1,6 @@
 package document
 
-func (d *Document) WithStyle(opts ...func(style interface{}) error) {
+func (d *Document) WithStyle(opts ...func(style any) error) {
 	newStyle := d.styles.Current().Clone()
 
 	for _, opt := range opts {
