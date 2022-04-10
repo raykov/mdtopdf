@@ -16,11 +16,10 @@ github.com/raykov/css-font-parser v0.3.0 h1:UvxiBwHPgUqtwiisddh1usFn/py9DnDUplXz
 github.com/raykov/css-font-parser v0.3.0/go.mod h1:/JI9PjSg2BxuFEs2q1ZyT1BlI6fWFF7HS3daDsi5V/E=
 github.com/raykov/gofpdf v1.16.7 h1:VYX6jIjXP4eHA5/7VkJaIHRs71yR89yr81nXZhP+NSg=
 github.com/raykov/gofpdf v1.16.7/go.mod h1:Rqarh670hM6++UtJfLC1WmHzCz4zwK8rkJtEjLvBObM=
-github.com/raykov/oksvg v0.0.4 h1:u7WY1gRkLYXtiOHFqLClolUxXv6a+GxdJSREkJHn004=
-github.com/raykov/oksvg v0.0.4/go.mod h1:MImg27VaCnCIy5RHvDlzCqeNoA9Hq06yurduSFW1MyE=
+github.com/raykov/oksvg v0.0.5 h1:xo4tPmME7B4RKFypxQfmC69XENsLna5ZQfzazBQiQYk=
+github.com/raykov/oksvg v0.0.5/go.mod h1:IIUa3RY3bfHH1D3bEQNCdeOtNrm40wnfqhiBM8Xx5dE=
 github.com/ruudk/golang-pdf417 v0.0.0-20181029194003-1af4ab5afa58/go.mod h1:6lfFZQK844Gfx8o5WFuvpxWRwnSoipWe/p622j1v06w=
 github.com/ruudk/golang-pdf417 v0.0.0-20201230142125-a7e3863a1245/go.mod h1:pQAZKsJ8yyVxGRWYNEm9oFB8ieLgKFnamEyDmSA0BRk=
-github.com/srwiley/oksvg v0.0.0-20220128195007-1f435e4c2b44 h1:XPYXKIuH/n5zpUoEWk2jWV/SjEMNYmqDYmTgbjmhtaI=
 github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41 h1:YR16ysw3I1bqwtEcYV9dpvhHEe7j55hIClkLoAqY31I=
 github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41/go.mod h1:nXTWP6+gD5+LUJ8krVhhoeHjvHTutPxMYl5SvkcnJNE=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=

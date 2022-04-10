@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/raykov/gofpdf v1.16.7
-	github.com/raykov/oksvg v0.0.4
+	github.com/raykov/oksvg v0.0.5
 	github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41
 	github.com/yuin/goldmark v1.4.11
 )
