@@ -35,7 +35,8 @@ func Convert(r io.Reader, w io.Writer, extensions ...func(*gofpdf.Fpdf)) error {
 
 	pdf.AddPage()
 
-	d := document.NewDocument(pdf, document.DefaultStyle)
+	style := SetStyleFromPdf(pdf)
+	d := document.NewDocument(pdf, style)
 
 	if err = markdown.Convert(md, d); err != nil {
 		return err
@@ -47,4 +48,17 @@ func Convert(r io.Reader, w io.Writer, extensions ...func(*gofpdf.Fpdf)) error {
 	}
 
 	return nil
+}
+
+// Use styles defined in PDF extensions
+func SetStyleFromPdf(pdf *gofpdf.Fpdf) (style *document.Style) {
+	style = document.DefaultStyle
+
+	style.FontSize, _ = pdf.GetFontSize()
+	style.FillColor.R, style.FillColor.G, style.FillColor.B = pdf.GetFillColor()
+	style.TextColor.R, style.TextColor.G, style.TextColor.B = pdf.GetTextColor()
+	style.LeftMargin, _, _, _ = pdf.GetMargins()
+	style.CellMargin = pdf.GetCellMargin()
+
+	return
 }
