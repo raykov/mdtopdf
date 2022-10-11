@@ -1,7 +1,7 @@
 package document
 
 import (
-	"github.com/raykov/mdtopdf/color"
+	"github.com/Acke0/mdtopdf/color"
 
 	"github.com/raykov/gofpdf"
 )

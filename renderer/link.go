@@ -3,7 +3,7 @@ package renderer
 import (
 	"strings"
 
-	"github.com/raykov/mdtopdf/color"
+	"github.com/Acke0/mdtopdf/color"
 
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/util"

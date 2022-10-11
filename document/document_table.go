@@ -1,6 +1,6 @@
 package document
 
-import "github.com/raykov/mdtopdf/color"
+import "github.com/Acke0/mdtopdf/color"
 
 // WriteTable draw a table in PDF
 func (d *Document) WriteTable(rows ...[]string) {

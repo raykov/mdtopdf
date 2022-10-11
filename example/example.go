@@ -6,7 +6,7 @@ import (
 
 	"github.com/raykov/gofpdf"
 
-	"github.com/raykov/mdtopdf"
+	"github.com/Acke0/mdtopdf"
 )
 
 func main() {

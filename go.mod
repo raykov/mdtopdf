@@ -1,6 +1,6 @@
-module github.com/raykov/mdtopdf
+module github.com/Acke0/mdtopdf
 
-go 1.18
+go 1.17
 
 require (
 	github.com/raykov/gofpdf v1.16.7

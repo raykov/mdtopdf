@@ -1,6 +1,6 @@
 package document
 
-import "github.com/raykov/mdtopdf/color"
+import "github.com/Acke0/mdtopdf/color"
 
 var DefaultStyle = &Style{FontFamily: "Arial", FontStyle: "", FontSize: 12, TextColor: color.Black, FillColor: color.White, Padding: 2, CellMargin: 1}
 var DefaultStyleBold = &Style{FontFamily: "Arial", FontStyle: "B", FontSize: 12, TextColor: color.Black, FillColor: color.White, Padding: 2, CellMargin: 1}

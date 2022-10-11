@@ -3,7 +3,7 @@ package document
 import (
 	"strings"
 
-	"github.com/raykov/mdtopdf/color"
+	"github.com/Acke0/mdtopdf/color"
 )
 
 // NewSetFontStyleOption sets new Font Style

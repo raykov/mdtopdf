@@ -3,8 +3,8 @@ package mdtopdf
 import (
 	"io"
 
-	"github.com/raykov/mdtopdf/document"
-	"github.com/raykov/mdtopdf/renderer"
+	"github.com/Acke0/mdtopdf/document"
+	"github.com/Acke0/mdtopdf/renderer"
 
 	"github.com/raykov/gofpdf"
 
