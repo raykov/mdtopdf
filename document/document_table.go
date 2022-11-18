@@ -1,6 +1,8 @@
 package document
 
-import "github.com/raykov/mdtopdf/color"
+import (
+	"github.com/raykov/mdtopdf/color"
+)
 
 // WriteTable draw a table in PDF
 func (d *Document) WriteTable(rows ...[]string) {
@@ -31,6 +33,9 @@ func (d *Document) WriteTable(rows ...[]string) {
 		maxLinesNum := 0
 		for _, s := range row {
 			lines := d.PDF.SplitLines([]byte(s), cw)
+			if len(s) == 0 {
+				lines = [][]byte{{' '}}
+			}
 			if l := len(lines); l > maxLinesNum {
 				maxLinesNum = l
 			}
