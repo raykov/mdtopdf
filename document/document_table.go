@@ -62,7 +62,7 @@ func (d *Document) WriteTable(rows ...[]string) {
 					ty = tm + ch*float64(j) + currStyle.FontSize
 				}
 
-				d.PDF.Text(tx, ty, string(line))
+				d.text(tx, ty, string(line))
 			}
 		}
 

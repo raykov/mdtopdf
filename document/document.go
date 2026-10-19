@@ -29,20 +29,24 @@ type Document struct {
 	styles *Styles
 
 	linkDestination string
+	inline          InlineImager
 }
 
 // Write writes a simple slice of bytes.
 // Also needed to satisfy io.Writer interface for `goldmark`
 func (d *Document) Write(p []byte) (n int, err error) {
-	s := string(p)
-
 	currStyle := d.styles.Current()
+	lineHeight := currStyle.FontSize + currStyle.Padding
 
-	switch {
-	default:
-		d.PDF.Write(currStyle.FontSize+currStyle.Padding, s)
-	case d.linkDestination != "":
-		d.PDF.WriteLinkString(currStyle.FontSize+currStyle.Padding, s, d.linkDestination)
+	for _, seg := range d.segments(string(p)) {
+		switch {
+		case seg.Image != nil:
+			d.writeInlineImage(lineHeight, currStyle.FontSize, seg.Image, d.linkDestination)
+		case d.linkDestination != "":
+			d.PDF.WriteLinkString(lineHeight, seg.Text, d.linkDestination)
+		default:
+			d.PDF.Write(lineHeight, seg.Text)
+		}
 	}
 
 	return len(p), nil
